@@ -21,15 +21,7 @@ const PageHome = () => {
     const [lista, setLista] = useState<Post[]>([]);
 
     const getBlogs = async () => {
-       // await postService.guardarUno({
-       //      active: true,
-       //      decription: 'Hola Mundo',
-       //      title: 'Titulo Uno',
-       //      like: 0,
-       //      dislike: 0,
-       //      createOn: new Date()
-       //  })
-
+        
         const posts = await postService.obtenerTodo();
 
         console.table(posts)
@@ -69,11 +61,7 @@ const PageHome = () => {
                             {lista?.map((value, index) => (
                                 <div className="p-4 md:w-1/3" key={index}>
                                     <div
-                                        className="h-full rounded-xl shadow-cla-blue bg-gradient-to-r from-indigo-50 to-blue-50 overflow-hidden">
-                                        <img
-                                            className="lg:h-48 md:h-36 w-full object-cover object-center scale-110 transition-all duration-400 hover:scale-100"
-                                            src="https://laverdadnoticias.com/__export/1585256906711/sites/laverdad/img/2020/03/26/quinta_avenida_vacixa3_2.jpg_237065588.jpg"
-                                            alt="blog"></img>
+                                        className="h-full rounded-xl shadow-cla-blue bg-gradient-to-r from-indigo-50 to-blue-50 overflow-hidden">              
                                         <div className="p-6">
                                             <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">Blog
                                                 -1</h2>
@@ -87,14 +75,16 @@ const PageHome = () => {
                                                 <button
                                                     className='bg-gradient-to-r from-blue-800 to-blue-800 hover:scale-105 drop-shadow-md  shadow-cla-blue px-4 py-1 rounded-lg'
                                                     onClick={notify}>👍 Like!
+                                                    {value.like}
                                                 </button>
                                                 <ToastContainer/>
                                                 <button
                                                     className="bg-gradient-to-r from-red-400 to-red-400 hover:scale-105 drop-shadow-md  shadow-cla-blue px-4 py-1 rounded-lg"
                                                     onClick={notify2}>👎 Dislike!
+                                                    {value.dislike}
                                                 </button>
                                                 <ToastContainer/>
-                                                <Link href={"/create"}>
+                                                <Link href={"/edit/1"}>
                                                     <button
                                                         className="bg-gradient-to-r from-cyan-400 to-blue-200 hover:scale-105 drop-shadow-md  shadow-cla-blue px-4 py-1 rounded-lg">Edit
                                                     </button>

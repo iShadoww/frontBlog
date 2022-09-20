@@ -1,39 +1,52 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { SyntheticEvent } from "react";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { SyntheticEvent, useEffect, useState } from 'react'
+import { postService } from '../../utils/post.service';
+import { Post } from '../../utils/types/post.type';
 
-
-const PageCreate = () => {
+const Edit = () => {
     const [titulo, setTitulo] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [activo, setActivo] = useState("");
 
+    const [blog, setBlog] = useState<Post>()
+
     const router = useRouter();
+
+    const { id } = router.query;
+
+    const getBlog = async (id: number) => {
+
+        const blog = await postService.obtenerUno(id)
+
+        setBlog(blog)
+    }
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        let DataAdd = {
-            title: titulo,
-            decription: descripcion,
-            like: 0,
-            dislike: 0
-        }
-
-        let Response = await fetch("http://localhost:8000/blogs", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json;charset=utf-8"
-            },
-            body: JSON.stringify(DataAdd)
-        }).catch((e) => {
-            console.warn(e)
-        })
-        let res = await Response?.json()
-        
         router.push('/home')
+
     }
+
+
+    useEffect(() => {
+
+        (async () => {
+            if (id) {
+                await getBlog(parseInt(`${id}`))
+            }
+        })();
+
+    }, [id]);
+
+    useEffect(() => {
+        if (blog) {
+            setTitulo(blog?.title);
+            setDescripcion(blog?.decription);
+        }
+    }, [blog]);
+
     return (
         <div>
             <Link href={"/home"}>
@@ -42,27 +55,23 @@ const PageCreate = () => {
                     al Home
                 </button>
             </Link>
-
-
             <main className="flex min-h-screen flex-col justify-center bg-cyan-500 p-16">
                 <form onSubmit={submit}>
-                    <h1 className="text-3xl font-bold text-white">Create a new blog</h1>
+                    <h1 className="text-3xl font-bold text-white">Update a blog</h1>
                     <p className="mb-8 font-semibold text-gray-100"></p>
                     <div className="w-full rounded-xl bg-white p-4 shadow-2xl shadow-white/40">
                         <div className="mb-4 grid grid-cols-2 gap-4">
                             <div className="flex flex-col">
                                 <label htmlFor="text" className="mb-2 font-semibold">Titulo</label>
-                                <input type="text" id="text" onChange={e => setTitulo(e.target.value)}
+                                <input type="text" id="text" value={titulo} onChange={e => setTitulo(e.target.value)}
                                     className="w-full max-w-lg rounded-lg border border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40" />
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="text" className="mb-2 font-semibold">Descripcion</label>
-                                <input type="text" id="text" onChange={e => setDescripcion(e.target.value)}
+                                <input type="text" id="text" value={descripcion} onChange={e => setDescripcion(e.target.value)}
                                     className="w-full max-w-lg rounded-lg border border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40" />
                             </div>
                         </div>
-
-
                         <div className="flex flex-col">
                             <label htmlFor="text" className="mb-2 font-semibold">Activo o Inactivo</label>
                             <input type="text" id="text" onChange={e => setActivo(e.target.value)}
@@ -86,7 +95,6 @@ const PageCreate = () => {
                             <button
                                 type="submit" className="bg-gradient-to-r from-gray-400 to-gray-200 hover:scale-105 drop-shadow-md  shadow-cla-blue px-4 py-1 rounded-lg">Next
                             </button>
-
                             <div className="flex items-center">
                             </div>
                         </div>
@@ -95,8 +103,7 @@ const PageCreate = () => {
             </main>
 
         </div>
-
-
     )
 }
-export default PageCreate;
+
+export default Edit;
