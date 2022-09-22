@@ -24,6 +24,22 @@ const Edit = () => {
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
+        
+        let UpdateAdd= {
+            title: setTitulo,
+            decription: setDescripcion,
+        }
+
+        let Response = await fetch("http://localhost:8000/blogs", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8"
+            },
+            body: JSON.stringify(UpdateAdd)
+        }).catch((e) => {
+            console.warn(e)
+        })
+        let res = await Response?.json()
         router.push('/home')
 
     }
