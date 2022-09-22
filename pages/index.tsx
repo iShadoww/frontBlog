@@ -1,42 +1,7 @@
 import { GetServerSideProps } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import { Productos } from '../components/Productos'
-import { useState } from 'react'
 
-{/*export type product = {
-  category : string  ;
-  description: string  ;
-  id: number  ;
-  price: number  ; 
-}
 
-type HomeProps = {
-  productos: product[]
-}
 
-const Home= ({productos}: HomeProps) => {
-  const [datos, setDatos] = useState(productos)
-  return (
-    <>
-    <Productos/>
-
-    </>
-  )
-}
-
-<div>
-  {
-    Productos.map(product =>(
-      <div key={product.id}>
-        <p>{product.category}</p>
-        <p>{product.description}</p>
-        <p>{product.price}</p>
-      </div>
-    ))
-  }
-</div>
-*/}
 
 interface IndexPageProps{
   data:{

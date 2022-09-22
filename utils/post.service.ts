@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Post } from './types/post.type';
 
-const uri: string = 'http://localhost:3000'
+const uri: string = 'http://localhost:8000'
 
 export class PostService {
 
@@ -12,7 +12,7 @@ export class PostService {
     }
 
     public obtenerUno(id: number) {
-        return axios.get(uri + '/blogs' + `${id}`).then((resp) => resp.data).catch((e) => {
+        return axios.get(uri + '/blogs/' + `${id}`).then((resp) => resp.data).catch((e) => {
             console.warn(e)
         })
     }
@@ -24,13 +24,13 @@ export class PostService {
     }
 
     public actualizarUno(data: Post) {
-        return axios.put(uri + '/blogs' + `${data.id}`, data).then((resp) => resp.data).catch((e) => {
+        return axios.put(uri + '/blogs/' + `${data.id}`, data).then((resp) => resp.data).catch((e) => {
             console.warn(e)
         })
     }
 
     public eliminarUno(id: number) {
-        return axios.delete(uri + '/blogs' + `${id}`).then((resp) => resp.data).catch((e) => {
+        return axios.delete(uri + '/blogs/' + `${id}`).then((resp) => resp.data).catch((e) => {
             console.warn(e)
         })
     }
