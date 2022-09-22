@@ -20,6 +20,8 @@ const notify3 = () => {
 
 
 const PageHome = () => {    
+
+    
     const [lista, setLista] = useState<Post[]>([]);
 
     const getBlogs = async () => {
@@ -34,6 +36,18 @@ const PageHome = () => {
     useEffect(() => {
         getBlogs();
     }, [])
+
+
+    const Elimi = async (id:any)=>{
+        await fetch (`http://localhost:8000/blogs/${id}`, {
+            method: "DELETE"
+    
+        
+    })
+    
+    await getBlogs();
+
+    }
     
     return (
         <main className="flex min-h-screen flex-col justify-center bg-blue-100 p-16">
@@ -93,7 +107,7 @@ const PageHome = () => {
                                                 
                                                 <button
                                                     className="bg-gradient-to-r from-red-400 to-red-400 hover:scale-105 drop-shadow-md  shadow-cla-blue px-4 py-1 rounded-lg"
-                                                    onClick={notify3}>Delete
+                                                    onClick={()=>Elimi(value.id)}>Delete
                                                 </button>
                                             </div>
                                         </div>

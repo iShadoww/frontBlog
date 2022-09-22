@@ -5,11 +5,19 @@ import { postService } from '../../utils/post.service';
 import { Post } from '../../utils/types/post.type';
 
 const Edit = () => {
-    const [titulo, setTitulo] = useState("");
-    const [descripcion, setDescripcion] = useState("");
-    const [activo, setActivo] = useState("");
+    // const [titulo, setTitulo] = useState("");
+    // const [descripcion, setDescripcion] = useState("");
+    // const [activo, setActivo] = useState("");
 
-    const [blog, setBlog] = useState<Post>()
+    const [blog, setBlog] = useState<Post>({
+        id: 0,
+        title: "",
+        active: true,
+        createOn: new Date(),
+        decription: "",
+        dislike: 0,
+        like: 0,
+    })
 
     const router = useRouter();
 
@@ -17,25 +25,25 @@ const Edit = () => {
 
     const getBlog = async (id: number) => {
 
-        const blog = await postService.obtenerUno(id)
+        const blog = await postService.obtenerUno(id);
 
-        setBlog(blog)
+        setBlog(blog);
     }
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
         
-        let UpdateAdd= {
-            title: setTitulo,
-            decription: setDescripcion,
-        }
+        // let UpdateAdd= {
+        //     title: titulo,
+        //     decription: descripcion,
+        // }
 
-        let Response = await fetch("http://localhost:8000/blogs", {
+        let Response = await fetch(`http://localhost:8000/blogs/${blog?.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json;charset=utf-8"
             },
-            body: JSON.stringify(UpdateAdd)
+            body: JSON.stringify(blog)
         }).catch((e) => {
             console.warn(e)
         })
@@ -46,7 +54,6 @@ const Edit = () => {
 
 
     useEffect(() => {
-
         (async () => {
             if (id) {
                 await getBlog(parseInt(`${id}`))
@@ -55,12 +62,12 @@ const Edit = () => {
 
     }, [id]);
 
-    useEffect(() => {
-        if (blog) {
-            setTitulo(blog?.title);
-            setDescripcion(blog?.decription);
-        }
-    }, [blog]);
+    // useEffect(() => {
+    //     if (blog) {
+    //         setTitulo(blog?.title);
+    //         setDescripcion(blog?.decription);
+    //     }
+    // }, [blog]);
 
     return (
         <div>
@@ -78,20 +85,30 @@ const Edit = () => {
                         <div className="mb-4 grid grid-cols-2 gap-4">
                             <div className="flex flex-col">
                                 <label htmlFor="text" className="mb-2 font-semibold">Titulo</label>
-                                <input type="text" id="text" value={titulo} onChange={e => setTitulo(e.target.value)}
+                                <input type="text" id="text" value={blog?.title || ""} onChange={e => setBlog((prevBlog) => {
+                                    return {
+                                        ...prevBlog,
+                                        title: e.target.value
+                                    }
+                                })}
                                     className="w-full max-w-lg rounded-lg border border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40" />
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="text" className="mb-2 font-semibold">Descripcion</label>
-                                <input type="text" id="text" value={descripcion} onChange={e => setDescripcion(e.target.value)}
+                                <input type="text" id="text" value={blog?.decription || ""} onChange={e => setBlog((prevBlog) => {
+                                    return {
+                                        ...prevBlog,
+                                        decription: e.target.value
+                                    }
+                                })}
                                     className="w-full max-w-lg rounded-lg border border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40" />
                             </div>
                         </div>
-                        <div className="flex flex-col">
+                        {/* <div className="flex flex-col">
                             <label htmlFor="text" className="mb-2 font-semibold">Activo o Inactivo</label>
                             <input type="text" id="text" onChange={e => setActivo(e.target.value)}
                                 className="w-full max-w-lg rounded-lg border border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40" />
-                        </div>
+                        </div> */}
                         <div className="flex">
 
                             <label htmlFor="privacy" className="mb-2 ">
